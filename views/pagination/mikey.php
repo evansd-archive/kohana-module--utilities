@@ -15,7 +15,7 @@
  *    .pagination p.total { color: #9f9f9f; }
  */
  
- // how mnay pages either side of the current page to display
+ // How mnay pages either side of the current page to display
 $spread = 5;
 ?>
 
