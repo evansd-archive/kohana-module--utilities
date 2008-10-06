@@ -1,7 +1,7 @@
 <?php
 class field_Core
 {
-	protected static get_value($data, $value)
+	protected static function get_value($data, $value)
 	{
 		$name = is_array($data) ? $data['name'] : $data;
 		

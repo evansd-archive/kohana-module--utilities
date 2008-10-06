@@ -66,27 +66,32 @@ abstract class Layout_Controller extends Controller
 	}
 	
 	
-	public function _url($extra = '', $protocol = FALSE)
+	public function _url($extra = '')
 	{
 		if ( ! isset($this->_url))
 		{
-			// get the original (pre-routed) url segments
+			// Get the original (pre-routed) url segments
 			$segments = Router::$segments;
 			
-			// get the method name and arguments in a single list
+			// Get the method name and arguments in a single list
 			$arguments = array_merge((array) Router::$method, Router::$arguments);
 			
-			// remove the method name and arguments from the original url
+			// Remove the method name and arguments from the original url
 			while($argument = array_pop($arguments))
 			{	
 				if ($argument == end($segments)) array_pop($segments);
 			}
 			
-			// what's left should be the controller url
+			// What's left should be the controller url
 			$this->_url = join('/', $segments);
 		}
 		
-		return url::site($this->_url.'/'.trim($extra, '/'), $protocol);
+		if ($extra != '')
+		{
+			$extra = '/'.trim($extra, '/');
+		}
+		
+		return $this->_url.$extra;
 	}
 	
 	

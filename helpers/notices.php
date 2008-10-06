@@ -2,16 +2,16 @@
 class notices_Core
 {
 	
-	public static function confirm($message, $headline = TRUE)
+	public static function confirm($message)
 	{
-		notices::set($headline ? 'headline' : 'message', $message);
+		notices::set('heading', $message);
 		notices::set('class', 'confirmation');
 	}
 	
 	
-	public static function error($message, $headline = TRUE)
+	public static function error($message)
 	{
-		notices::set($headline ? 'headline' : 'message', $message);
+		notices::set('heading', $message);
 		notices::set('class', 'error');
 	}
 	
@@ -60,7 +60,7 @@ class notices_Core
 		
 		if (empty($notices)) return;
 		
-		if ( ! $view) $view = 'notices';
+		$view = empty($notices['view']) ? ($view ? $view : 'notices') : $notices['view'];
 		
 		return View::factory($view, $notices)->render();
 	}
