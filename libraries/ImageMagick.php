@@ -155,9 +155,8 @@ class ImageMagick_Core {
 	
 	protected function modify($command)
 	{
-		$clone = clone $this;
-		$clone->argument .= ' '.$command;
-		return $clone;
+		$this->argument .= ' '.$command;
+		return $this;
 	}
 	
 	
