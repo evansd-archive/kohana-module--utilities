@@ -326,7 +326,7 @@ class ImageMagick_Core {
 			$format = $this->details()->format;
 		}
 		
-		$command = $this->convert.' '.$this->command.' ';
+		$command = $this->convert.' '.$this->argument.' ';
 		
 		// Explicitly specifiy the output format, if there is one
 		if($format) $command .= escapeshellarg($format).':';
