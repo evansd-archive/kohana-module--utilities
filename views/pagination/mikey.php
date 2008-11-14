@@ -52,8 +52,8 @@ $spread = 5;
 		<?php if($pageto < $total_pages) echo '&nbsp;&#8230;';?>
 
 		<?php if($next_page) {?>
-			<a class="next" href="<?php str_replace('{page}', $next_page, $url);?>" title="Next">&gt;</a>
-			<a href="<?php str_replace('{page}', $total_pages, $url);?>" title="Last">&gt;&gt;</a>
+			<a class="next" href="<?php echo str_replace('{page}', $next_page, $url);?>" title="Next">&gt;</a>
+			<a href="<?php echo str_replace('{page}', $total_pages, $url);?>" title="Last">&gt;&gt;</a>
 		<?php } else {?>
 			<span class="inactive next">&gt;</span>
 			<span class="inactive">&gt;&gt;</span>
