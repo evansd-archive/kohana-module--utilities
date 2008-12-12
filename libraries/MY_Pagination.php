@@ -1,6 +1,13 @@
 <?php
 class Pagination extends Pagination_Core
 {
+	// Optional hash fragment to be added to end of URL e.g, #results
+	protected $fragment;
+
+	// Any extra settings to be passed to the pagination view
+	protected $extras = array();
+
+
 	public function paginate(ORM $model)
 	{
 		// Re-extract current page
@@ -13,22 +20,33 @@ class Pagination extends Pagination_Core
 		{
 			$this->current_page = (int) URI::instance()->segment($this->uri_segment);
 		}
-		
+
 		$this->current_page = $current_page = max(1, $this->current_page);
-		
+
 		// Reset the sql offset based on current page
 		$this->sql_offset = (int) ($this->current_page - 1) * $this->items_per_page;
-		
+
 		// Find the current page of results
 		$results = $model->find_all($this->items_per_page, $this->sql_offset);
-		
+
 		// Set the correct total_item count
 		$this->total_items = $model->count_last_query();
-		
+
 		// Re-initialize to ensure all values are set correctly
 		$this->initialize();
-		
+
 		return $results;
 	}
-	
+
+
+	public function initialize($config = array())
+	{
+		parent::initialize($config);
+
+		if( ! empty($this->fragment))
+		{
+			$this->url .= '#'.ltrim($this->fragment, '#');
+		}
+	}
+
 }
