@@ -1,7 +1,13 @@
 <?php
 /**
- * Mike Thompson's pagination style
- * 
+ *  Trinity Hall pagination style (by Mike Thompson and Dave Evans)
+ *
+ * Extra options:
+ *     spread:      How many pages either side of the current page to display (default 5)
+ *     hide_count:  Whether to display the total item count beneath the page listing (default FALSE)
+ *     noun:        Noun to use in the item count e.g., 'results', 'users', 'files' (default is 'items')
+ *                  Either supply plural form and singular will be automatically worked out or an array in the form (plural, singular)
+ *
  * CSS suggestion:
  *
  *    .pagination { clear: both; text-align: center;}
@@ -14,9 +20,36 @@
  *    .pagination .inactive { color: #9f9f9f; padding: 0.28em 0.5em;}
  *    .pagination p.total { color: #9f9f9f; }
  */
- 
- // How mnay pages either side of the current page to display
-$spread = 5;
+
+ // Default spread if none set
+$spread = isset($extras['spread']) ? $extras['spread'] : 5;
+
+// Generate the total item counter
+if (empty($extras['hide_count']))
+{
+	if (isset($extras['noun']))
+	{
+		if (is_array($extras['noun']))
+		{
+			$noun = ($total_items != 1) ? reset($extras['noun']) : end($extras['noun']);
+		}
+		else
+		{
+			$noun = ($total_items != 1) ? $extras['noun'] : inflector::singular($extras['noun']);
+		}
+	}
+	else
+	{
+		$noun = ($total_items != 1) ? 'items' : 'item';
+	}
+
+	$counter = $total_items.' '.$noun;
+}
+else
+{
+	$counter = FALSE;
+}
+
 ?>
 
 <div class="pagination">
@@ -29,7 +62,7 @@ $spread = 5;
 			<span class="inactive">&lt;&lt;</span>
 			<span class="inactive previous">&lt;</span>
 		<?php }?>
-		
+
 		<?php
 		$pagefrom = $current_page - $spread;
 		$pageto = $current_page + $spread;
@@ -38,9 +71,9 @@ $spread = 5;
 		$pagefrom = max(1, $pagefrom);
 		$pageto = min($total_pages, $pageto);
 		?>
-		
+
 		<?php if($pagefrom>1) echo '&#8230;&nbsp;';?>
-		
+
 		<?php foreach(range($pagefrom, $pageto) as $num) {?>
 			<?php if($num == $current_page) {?>
 				<span class="current"><?=$num;?></span>
@@ -48,7 +81,7 @@ $spread = 5;
 				<a href="<?php echo str_replace('{page}', $num, $url);?>"><?php echo $num;?></a>
 			<?php }?>
 		<?php }?>
-		
+
 		<?php if($pageto < $total_pages) echo '&nbsp;&#8230;';?>
 
 		<?php if($next_page) {?>
@@ -59,6 +92,8 @@ $spread = 5;
 			<span class="inactive">&gt;&gt;</span>
 		<?php }?>
 		</p>
+	<?php }
+	if ($counter !== FALSE) {?>
+		<p class="total">(<?php echo $counter;?>)</p>
 	<?php }?>
-	<p class="total">(<?php echo $total_items;?> item<?php echo $total_items !=1 ? 's' : '';?>)</p>
 </div>
