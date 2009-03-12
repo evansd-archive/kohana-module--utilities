@@ -28,20 +28,34 @@ abstract class Layout_Controller extends Controller
 
 	public function _render()
 	{
-		// If $content is a view object but doesn't have a view file defined ...
+		// If a file hasn't been specified for the view we attempt to determine
+		// it automatically based on controller and method name
 		if($this->content instanceof View AND ! $this->content->kohana_filename)
 		{
-			// ... use the default one based on controller and method name
-			$this->content->set_filename($this->_path(Router::$method));
+			// Default view file is views/<controller-name>/<method-name>.php
+			$view = $this->_path(Router::$method);
+
+			// For index method we also allow views/<controller>.php if the index.php
+			// file doesn't exist
+			if(Router::$method == 'index' AND ! Kohana::find_file('views', $view))
+			{
+				$view = $this->_path();
+			}
+
+			$this->content->set_filename($view);
 		}
 
-		if($this->template instanceof View) // If there's a template defined ...
+		// If there's a template defined ...
+		if($this->template instanceof View)
 		{
-			$this->template->render(TRUE); // ... render it
+			// ... render it
+			$this->template->render(TRUE);
 		}
+
+		// ... otherwise just render the content view
 		elseif($this->content instanceof View)
 		{
-			$this->content->render(TRUE); // ... otherwise just render the content view
+			$this->content->render(TRUE);
 		}
 
 	}
