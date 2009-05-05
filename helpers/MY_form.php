@@ -27,10 +27,10 @@ class form extends form_Core
 	}
 
 
-	public static function input($data, $value = '', $extra = '')
+	public static function input($data, $value = '', $extra = '', $double_encode = TRUE)
 	{
 		$value = self::get_value($data, $value);
-		return parent::input($data, $value, $extra);
+		return parent::input($data, $value, $extra, $double_encode);
 	}
 
 
@@ -48,10 +48,10 @@ class form extends form_Core
 	}
 
 
-	public static function textarea($data, $value = '', $extra = '')
+	public static function textarea($data, $value = '', $extra = '', $double_encode = TRUE)
 	{
 		$value = self::get_value($data, $value);
-		return parent::textarea($data, $value, $extra);
+		return parent::textarea($data, $value, $extra, $double_encode);
 	}
 
 
