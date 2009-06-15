@@ -24,28 +24,25 @@ class notices_Core
 	
 	public static function set($key, $value, $group = 'default')
 	{
-		// Get the notices array out of the session, blank array as default
-		$notices = Session::instance()->get('notices', array());
+		$session_key = 'notices_'.$group;
 		
-		if( ! isset($notices[$group]))
-		{
-			$notices[$group] = array();
-		}
+		// Get the notices array out of the session, blank array as default
+		$notices = Session::instance()->get($session_key, array());
 		
 		// If $value is an array we merge it with the existing values
-		if(is_array($value)) 
+		if (is_array($value)) 
 		{
 			// Make sure the appropriate key is set and is an array
-			$notices[$group][$key] = isset($notices[$group][$key]) ? (array) $notices[$group][$key] : array();
+			$notices[$key] = isset($notices[$key]) ? (array) $notices[$key] : array();
 			$value = array_values($value);
-			$notices[$group][$key] = array_merge($notices[$group][$key], $value);
+			$notices[$key] = array_merge($notices[$key], $value);
 		}
 		else
 		{
-			$notices[$group][$key] = $value;
+			$notices[$key] = $value;
 		}
 		
-		Session::instance()->set('notices', $notices);
+		Session::instance()->set($session_key, $notices);
 	}
 	
 	
@@ -53,12 +50,12 @@ class notices_Core
 	{
 		if ( ! notices::session_exists()) return;
 		
-		$notices = Session::instance()->get_once('notices');
+		$notices = Session::instance()->get_once('notices_'.$group);
 		
-		if ( ! empty($notices) AND ! empty($notices[$group]))
+		if ( ! empty($notices))
 		{
-			$view = empty($notices[$group]['view']) ? 'notices' : $notices[$group]['view'];
-			return View::factory($view, $notices[$group])->render();
+			$view = empty($notices['view']) ? 'notices' : $notices['view'];
+			return View::factory($view, $notices)->render();
 		}
 	}
 	
