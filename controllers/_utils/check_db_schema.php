@@ -27,18 +27,15 @@ class Check_DB_Schema_Controller extends Controller
 		}
 
 		// If the databases are identical, exit with success status
-		if($db['development'] === $db['production']) exit(0);
-
-		echo "Database schema mismatch\n";
-
-		// Exit with error status
-		exit(1);
-
-	}
-
-
-	protected function diff(array $arr1, array $arr2)
-	{
-		return array_merge(array_diff_assoc($arr1, $arr2), array_diff_assoc($arr2, $arr1));
+		if($db['development'] === $db['production'])
+		{
+			exit(0);
+		}
+		// Otherwise exit with error status
+		else
+		{
+			echo "Database schema mismatch\n";
+			exit(1);
+		}
 	}
 }
