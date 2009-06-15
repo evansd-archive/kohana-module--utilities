@@ -1,7 +1,6 @@
 <?php
 class notices_Core
 {
-	
 	public static function confirm($message)
 	{
 		notices::set('heading', $message);
@@ -25,10 +24,10 @@ class notices_Core
 	
 	public static function set($key, $value)
 	{
-		// get the notices array out of the session, blank array as default
+		// Get the notices array out of the session, blank array as default
 		$notices = Session::instance()->get('notices', array());
 		
-		// if $value is an array we merge it with the existing values
+		// If $value is an array we merge it with the existing values
 		if(is_array($value)) 
 		{
 			$notices[$key] = isset($notices[$key]) ? (array) $notices[$key] : array();
@@ -44,13 +43,9 @@ class notices_Core
 	}
 	
 	
-	
-	
-	
-	
 	public static function render($view = FALSE)
 	{
-		// check for existence of session to avoid creating one if not required
+		// Check for existence of session to avoid creating one if not required
 		if (empty($_SESSION['session_id']) AND empty($_COOKIE[$name = Kohana::config('session.name')]) AND empty($_GET[$name]))
 		{
 			return;
