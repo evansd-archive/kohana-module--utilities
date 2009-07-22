@@ -44,6 +44,22 @@ class ImageMagick_Core {
 
 		return ImageMagick::factory($file)->is_valid;
 	}
+	
+	
+	/**
+	* Alias for 'valid'. Required as a workaround for the fact that
+	* error messages keys in Kohana's Validation library only use the
+	* method name, not class name plus method name. This means that
+	* there is no way to define different error messages for e.g.,
+	* upload::valid and ImageMagick::valid.
+	*
+	* @param   mixed   filename, or array of uploaded file details
+	* @return  bool
+	*/
+	public static function imagemagick_valid($file)
+	{
+		return ImageMagick::valid($file);
+	}
 
 	/**
 	* Creates a new ImageMagick instance.
