@@ -61,7 +61,7 @@ abstract class Layout_Controller extends Controller
 	}
 
 
-	public function _url($segments = '', $protocol = NULL)
+	public function _url($segments = '', $protocol = FALSE)
 	{
 		// Find the controller URL, if not already found and chached
 		if ( ! isset($this->_url))
@@ -89,7 +89,7 @@ abstract class Layout_Controller extends Controller
 
 		$url = $this->_url.$segments;
 
-		return $protocol === NULL ? $url : url::site($url, $protocol);
+		return $protocol !== NULL ? url::site($url, $protocol) : $url;
 	}
 
 
