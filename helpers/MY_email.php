@@ -61,6 +61,20 @@ class email extends email_Core
 				}
 			}
 		}
+		
+		if (is_array($from) AND isset($from['from']))
+		{
+			foreach(array('reply-to' => 'setReplyTo', 'return-path' => 'setReturnPath') as $key => $method)
+			{
+				if(isset($from[$key]))
+				{
+					$address = is_array($from[$key]) ? $from[$key] : array($from[$key], NULL); 
+					$message->$method(new Swift_Address($address[0], $address[1]));
+				}
+			}
+			
+			$from = $from['from'];
+		}
 
 		if (is_string($from))
 		{
@@ -69,31 +83,8 @@ class email extends email_Core
 		}
 		elseif (is_array($from))
 		{
-			if (isset($from[0]) AND isset($from[1]))
-			{
-				// Create From: address set
-				$from = array('from' => $from);
-			}
-			
-			foreach ($from as $method => $set)
-			{
-				// Create method name
-				$method = 'set'.ucwords(str_replace('-', ' ', $method));
-				
-				if(in_array($method, array('setFrom', 'setReplyTo', 'setReturnPath')))
-				{
-					if (is_array($set))
-					{
-						// Add a recipient with name
-						$message->$method(new Swift_Address($set[0], $set[1]));
-					}
-					else
-					{
-						// Add a recipient without name
-						$message->$method(new Swift_Address($set));
-					}
-				}
-			}
+			// From with a name
+			$from = new Swift_Address($from[0], $from[1]);
 		}
 
 		return email::$mail->send($message, $recipients, $from);
