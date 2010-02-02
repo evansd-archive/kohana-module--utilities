@@ -4,7 +4,9 @@ abstract class Layout_Controller extends Controller
 	public $template = 'templates/main';
 
 	public $content;
-
+	
+	public $auto_render = TRUE;
+	
 	private $_path;
 	private $_url;
 
@@ -28,6 +30,9 @@ abstract class Layout_Controller extends Controller
 
 	public function _render()
 	{
+		// Check that auto-render is enabled
+		if ( ! $this->auto_render) return;
+		
 		// If a file hasn't been specified for the view we attempt to determine
 		// it automatically based on controller and method name
 		if($this->content instanceof View AND ! $this->content->kohana_filename)
