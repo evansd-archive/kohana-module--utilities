@@ -80,6 +80,17 @@ class form extends form_Core
 
 		return parent::radio($data, $value, $checked, $extra);
 	}
+	
+	
+	public static function hidden($data,  $value = '')
+	{
+		if ( ! is_array($data))
+		{
+			$value = self::get_value($data, $value);
+		}
+		
+		return parent::hidden($data, $value);
+	}
 
 
 	public static function attributes($attr, $type = NULL)
