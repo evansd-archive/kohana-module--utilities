@@ -30,7 +30,7 @@ class Pagination extends Pagination_Core
 		// This is necessary because if you create a Pagination object
 		// without specifying the total pages, then current page is
 		// always set to 1.
-		$this->determine_current_page()
+		$this->determine_current_page();
 
 		// Find the current page of results
 		$results = $query->find_all($this->items_per_page, $this->sql_offset);
