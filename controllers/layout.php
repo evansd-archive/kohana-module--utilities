@@ -102,29 +102,29 @@ abstract class Layout_Controller extends Controller
 			$this->content->set($data);
 		}
 		
-		// If content view does not already have an associated file we
-		// need to set one
-		if ( ! $this->content->kohana_filename)
+		// If no view name is supplied and the content view does not
+		// already have an associated file we use the default which is:
+		// <controller-directory>/<controller-name>/<action>
+		if ($view_name === NULL AND ! $this->content->kohana_filename)
 		{
-			// If no view name is supplied use the default which is:
-			// <controller-directory>/<controller-name>/<action>
-			if ($view_name === NULL)
+			$path = $this->add_controller_path(Router::$method);
+			
+			// Special case for the default action. If the standard view
+			// does not exist we use the view at:
+			// <controller-directory>/<controller-name>
+			if (Router::$method === 'index' AND ! Kohana::find_file('views', $path))
 			{
-				$path = $this->add_controller_path(Router::$method);
-				
-				// Special case for the default action: if the standard view does not exist we
-				// use the view at <controller-directory>/<controller-name>
-				if (Router::$method === 'index' AND ! Kohana::find_file('views', $path))
-				{
-					$path = $this->add_controller_path('');
-				}
+				$path = $this->add_controller_path('');
 			}
-			else
-			{
-				$path = $this->add_controller_path($view_name);
-			}
-		
+			
 			$this->content->set_filename($path);
+		}
+		
+		// If a view name is supplied, add the controller path to get
+		// the full view path, and set is as the content view
+		elseif ($view_name !== NULL)
+		{
+			$this->content->set_filename($this->add_controller_path($view_name));
 		}
 		
 		$view = $this->template ? $this->template : $this->content;
