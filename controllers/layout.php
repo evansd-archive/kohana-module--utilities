@@ -257,9 +257,9 @@ abstract class Layout_Controller extends Controller
 			$arguments = array_merge((array) Router::$method, Router::$arguments);
 
 			// Remove the method name and arguments from the original URL
-			while($argument = array_pop($arguments))
+			while(($argument = array_pop($arguments)) !== NULL)
 			{
-				if ($argument == end($original)) array_pop($original);
+				if ($argument === end($original)) array_pop($original);
 			}
 
 			// What's left should be the controller URL
