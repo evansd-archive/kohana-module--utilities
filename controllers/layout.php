@@ -69,9 +69,7 @@ abstract class Layout_Controller extends Controller
 	 */
 	public function _auto_render()
 	{
-		if ($this->auto_render === TRUE
-		    AND ! ob_get_length()
-		    AND $this->content instanceof View)
+		if ($this->auto_render === TRUE AND ! ob_get_length())
 		{
 			$this->render();
 		}
@@ -105,7 +103,9 @@ abstract class Layout_Controller extends Controller
 		// If no view name is supplied and the content view does not
 		// already have an associated file we use the default which is:
 		// <controller-directory>/<controller-name>/<action>
-		if ($view_name === NULL AND ! $this->content->kohana_filename)
+		if ($view_name === NULL
+		    AND $this->content instanceof View
+		    AND ! $this->content->kohana_filename)
 		{
 			$path = $this->add_controller_path(Router::$method);
 			
@@ -129,7 +129,7 @@ abstract class Layout_Controller extends Controller
 		
 		$view = $this->template ? $this->template : $this->content;
 		
-		$view->render(TRUE);
+		echo is_scalar($view) ? $view : $view->__toString();
 	}
 	
 	/**
