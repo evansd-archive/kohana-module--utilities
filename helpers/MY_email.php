@@ -40,7 +40,7 @@ class email extends email_Core
 
 			foreach ($to as $method => $set)
 			{
-				if ( ! in_array($method, array('to', 'cc', 'bcc')))
+				if ( ! in_array($method, array('to', 'cc', 'bcc'), TRUE))
 				{
 					// Use To: by default
 					$method = 'to';
@@ -66,9 +66,9 @@ class email extends email_Core
 		{
 			foreach(array('reply-to' => 'setReplyTo', 'return-path' => 'setReturnPath') as $key => $method)
 			{
-				if(isset($from[$key]))
+				if (isset($from[$key]))
 				{
-					$address = is_array($from[$key]) ? $from[$key] : array($from[$key], NULL); 
+					$address = is_array($from[$key]) ? $from[$key] + array(NULL, NULL) : array($from[$key], NULL); 
 					$message->$method(new Swift_Address($address[0], $address[1]));
 				}
 			}
@@ -83,6 +83,9 @@ class email extends email_Core
 		}
 		elseif (is_array($from))
 		{
+			//  Make sure both indicies are set
+			$from = $from + array(NULL, NULL);
+			
 			// From with a name
 			$from = new Swift_Address($from[0], $from[1]);
 		}
