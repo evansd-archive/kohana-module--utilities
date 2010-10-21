@@ -169,7 +169,7 @@ class ImageMagick_Core {
 	}
 
 
-	protected function modify($command)
+	public function modify($command)
 	{
 		$this->argument .= ' '.$command;
 		return $this;
