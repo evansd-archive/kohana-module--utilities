@@ -58,6 +58,12 @@ class form extends form_Core
 	public static function dropdown($data, $options = NULL, $selected = NULL, $extra = '')
 	{
 		$selected = self::get_value($data, $selected);
+		
+		if ( ! empty($data['multiple']) AND substr($data['name'], -2) != '[]')
+		{
+			$data['name'] = $data['name'].'[]';
+		}
+		
 		return parent::dropdown($data, $options, $selected, $extra);
 	}
 
